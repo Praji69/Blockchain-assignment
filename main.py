@@ -151,3 +151,31 @@ if __name__ == "__main__":
             print("\nStarting mining process...")
             my_blockchain.append_new_block(block_data)
             print("New block added to blockchain successfully!")
+            elif user_choice == "2":
+            print("\nComplete Blockchain:")
+            print("-" * 60)
+            for block in my_blockchain.blocks:
+                print(f"Block #{block.block_id}")
+                print(f"  Created: {time.ctime(block.created_time)}")
+                print(f"  Data: {block.block_data}")
+                print(f"  Nonce: {block.nonce}")
+                print(f"  Previous Hash: {block.prev_block_hash}")
+                print(f"  Current Hash: {block.current_hash}")
+                print("-" * 60)
+                
+        elif user_choice == "3":
+            if my_blockchain.validate_integrity():
+                print("Blockchain is valid - no tampering detected")
+            else:
+                print("Blockchain validation failed - possible tampering detected")
+                
+        elif user_choice == "4":
+            my_blockchain.display_chain_stats()
+            
+        elif user_choice == "5":
+            print("Thank you for using the blockchain system")
+            print("Program terminated")
+            break
+            
+        else:
+            print("Invalid option selected. Please choose 1-5")
