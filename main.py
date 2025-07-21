@@ -16,4 +16,16 @@ class CryptoBlock:
         self.nonce = nonce                          # Number used for mining
         self.current_hash = self.generate_hash()    # Hash of this block
 
-    
+     def generate_hash(self):
+        # Creates a unique hash for this block
+        # All block information is combined to make the hash
+        block_content = {
+            "id": self.block_id,
+            "prev_hash": self.prev_block_hash,
+            "timestamp": self.created_time,
+            "data": self.block_data,
+            "nonce": self.nonce
+        }
+        # Convert to string and create hash
+        content_string = json.dumps(block_content, sort_keys=True)
+        return hashlib.sha256(content_string.encode('utf-8')).hexdigest()
