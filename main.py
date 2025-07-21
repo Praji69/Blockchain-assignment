@@ -111,3 +111,43 @@ class SecureChain:
             if current_block.prev_block_hash != previous_block.current_hash:
                 print(f"Block {current_block.block_id}: Previous hash link is broken!")
                 return False
+            print("Blockchain integrity verified successfully")
+        return True
+
+    def display_chain_stats(self):
+        """
+        Shows information about the blockchain.
+        Includes block count, difficulty, and validity status.
+        """
+        print(f"\nBlockchain Information:")
+        print(f"  Total blocks: {len(self.blocks)}")
+        print(f"  Mining difficulty: {self.mining_complexity}")
+        print(f"  Chain status: {'Valid' if self.validate_integrity() else 'Invalid'}")
+        # Calculate total mining work done
+        total_nonces = sum(block.nonce for block in self.blocks)
+        print(f"  Total mining attempts: {total_nonces}")
+
+# Main program interface
+if __name__ == "__main__":
+    my_blockchain = SecureChain()
+    
+    print("Blockchain System Started")
+    print("Welcome to the blockchain management system")
+    
+    while True:
+        print("\n" + "="*50)
+        print("Available Options:")
+        print("  [1] Add new block with data")
+        print("  [2] Display all blocks in chain")
+        print("  [3] Verify blockchain integrity")
+        print("  [4] Show blockchain statistics")
+        print("  [5] Exit program")
+        print("="*50)
+        
+        user_choice = input("Select option (1-5): ").strip()
+        
+        if user_choice == "1":
+            block_data = input("Enter data for new block: ")
+            print("\nStarting mining process...")
+            my_blockchain.append_new_block(block_data)
+            print("New block added to blockchain successfully!")
