@@ -71,3 +71,43 @@ class SecureChain:
             # Show progress every 5000 attempts
             if target_block.nonce % 5000 == 0:
                 print(f"Mining in progress... attempts made: {target_block.nonce}")
+
+    def append_new_block(self, user_data):
+        """
+        Creates a new block with user data and adds it to the chain.
+        The block must be mined before adding to the blockchain.
+        """
+        # Get hash from the last block to link properly
+        last_block_hash = self.fetch_last_block().current_hash
+        # Create new block with provided data
+        new_crypto_block = CryptoBlock(
+            block_id=len(self.blocks),
+            prev_block_hash=last_block_hash,
+            created_time=time.time(),
+            block_data=user_data,
+            nonce=0
+        )
+        self.mine_block(new_crypto_block)           # Mine the block
+        self.blocks.append(new_crypto_block)        # Add to chain
+
+    def validate_integrity(self):
+        """
+        Checks if the blockchain is valid and not tampered with.
+        Verifies all hashes and block connections.
+        """
+        print("Checking blockchain integrity...")
+        
+        # Check each block starting from second block
+        for i in range(1, len(self.blocks)):
+            current_block = self.blocks[i]
+            previous_block = self.blocks[i-1]
+
+            # Verify the stored hash matches calculated hash
+            if current_block.current_hash != current_block.generate_hash():
+                print(f"Block {current_block.block_id}: Hash does not match!")
+                return False
+            
+            # Verify the block links to previous block correctly
+            if current_block.prev_block_hash != previous_block.current_hash:
+                print(f"Block {current_block.block_id}: Previous hash link is broken!")
+                return False
