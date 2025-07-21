@@ -54,3 +54,20 @@ class SecureChain:
         # Mining finds a nonce that makes the hash start with zeros
         target_block.nonce = 0
         mining_target = "0" * self.mining_complexity
+        print(f"Mining started with difficulty {self.mining_complexity}")
+        start_time = time.time()
+        
+        while True:
+            # Calculate new hash with current nonce
+            target_block.current_hash = target_block.generate_hash()
+            # Check if hash meets the difficulty requirement
+            if target_block.current_hash.startswith(mining_target):
+                mining_time = time.time() - start_time
+                print(f"Block mined successfully in {mining_time:.2f} seconds")
+                print(f"Final nonce value: {target_block.nonce}")
+                break
+            target_block.nonce += 1
+            
+            # Show progress every 5000 attempts
+            if target_block.nonce % 5000 == 0:
+                print(f"Mining in progress... attempts made: {target_block.nonce}")
