@@ -29,3 +29,28 @@ class CryptoBlock:
         # Convert to string and create hash
         content_string = json.dumps(block_content, sort_keys=True)
         return hashlib.sha256(content_string.encode('utf-8')).hexdigest()
+    
+    # Main blockchain class
+class SecureChain:
+    """
+    The blockchain system that manages all blocks.
+    Provides mining and validation functionaliy.
+    """
+    def __init__(self):
+        self.blocks = [self.initialize_genesis()]   # Start with first block
+        self.mining_complexity = 3                  # Difficulty level for mining
+
+    def initialize_genesis(self):
+        # Creates the first block in the blockchain
+        # This block has no previous block to reference
+        return CryptoBlock(0, "0x0", time.time(), "Genesis Block - First block created", 0)
+
+    def fetch_last_block(self):
+        # Returns the most recent block in the chain
+        return self.blocks[-1]
+
+    def mine_block(self, target_block):
+        # Performs mining operation on a block
+        # Mining finds a nonce that makes the hash start with zeros
+        target_block.nonce = 0
+        mining_target = "0" * self.mining_complexity
